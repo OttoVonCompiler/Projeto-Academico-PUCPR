@@ -1,56 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Meu Cloud Pessoal</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app">
-        <div class="topbar">
-            <div class="topbar-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
-            <h1>Meu cloud pessoal</h1>
-            </div>
-            <span class="topbar-meta" id="file-count">0 arquivos</span>
-        </div>
-
-        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('fileInput').click()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            <p>Arraste arquivos aqui ou <span>selecione do dispositivo</span></p>
-            <input type="file" id="fileInput" onchange="handleFileSelect(this)">
-            <div id="selected-name" style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px;display:none"></div>
-            <button class="upload-btn" onclick="event.stopPropagation();uploadFile()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            Enviar arquivo
-            </button>
-            <div class="progress-wrap" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-
-        <div id="toast" class="toast"></div>
-
-        <div class="toolbar">
-            <input class="filter-input" id="searchInput" type="text" placeholder="Buscar por nome..." oninput="renderGallery()">
-            <button class="type-pill active" data-type="all" onclick="setFilter(this)">Todos</button>
-            <button class="type-pill" data-type="image" onclick="setFilter(this)">Fotos</button>
-            <button class="type-pill" data-type="video" onclick="setFilter(this)">Vídeos</button>
-        </div>
-
-        <p class="section-label" id="gallery-label">Galeria</p>
-        <div class="grid" id="lista"></div>
-
-        <div class="modal-wrap" id="modalDestaque">
-            <div class="modal-content" id="modalConteudo"></div>
-            <div class="modal-footer">
+    <div class="modal-wrap" id="modalDestaque">
+        <div class="modal-content" id="modalConteudo"></div>
+        <div class="modal-footer">
             <span class="modal-name" id="nomeArquivoDestaque"></span>
             <div class="modal-btns">
                 <button class="modal-btn del" onclick="deletarDestaque()">Excluir</button>
                 <button class="modal-btn" onclick="downloadDestaque()">Baixar</button>
                 <button class="modal-btn" onclick="fecharModal()">Fechar</button>
             </div>
-            </div>
         </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- SIDEBAR (no estilo do Google Fotos) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                </svg>
+                <span>Meu cloud</span>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-filter="all" onclick="setSidebarFilter(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                    </svg>
+                    <span>Todos</span>
+                </button>
+                <button class="nav-item" data-filter="image" onclick="setSidebarFilter(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="9.5" r="2.5"/>
+                        <path d="M21 15l-5-4-3 3-4-4-5 5"/>
+                    </svg>
+                    <span>Fotos</span>
+                </button>
+                <button class="nav-item" data-filter="video" onclick="setSidebarFilter(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" opacity="0.4"/>
+                        <rect x="2" y="6" width="16" height="12" rx="2"/>
+                    </svg>
+                    <span>Vídeos</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="storage-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                        <path d="M17 21v-4H7v4"/>
+                    </svg>
+                    <span>Armazenamento</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-title">
+                    <h1>Meu cloud pessoal</h1>
+                </div>
+                <span class="topbar-meta" id="file-count">0 arquivos</span>
+            </div>
+
+            <div class="upload-zone" id="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                <p>Arraste arquivos aqui ou <span>selecione do dispositivo</span></p>
+                <input type="file" id="fileInput" onchange="handleFileSelect(this)">
+                <div id="selected-name" style="font-size:12px;color:#5f6368;margin-bottom:10px;display:none"></div>
+                <button class="upload-btn" onclick="event.stopPropagation();uploadFile()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    Enviar arquivo
+                </button>
+                <div class="progress-wrap" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div id="toast" class="toast"></div>
+
+            <div class="toolbar">
+                <input class="filter-input" id="searchInput" type="text" placeholder="Buscar por nome..." oninput="renderGallery()">
+            </div>
+
+            <p class="section-label" id="gallery-label">Galeria</p>
+            <div class="grid" id="lista"></div>
+        </main>
     </div>
 
     <script>
@@ -59,13 +106,14 @@
     let currentItem = null;
     let activeFilter = 'all';
 
+    // Elementos
     const dropZone = document.getElementById('drop-zone');
     dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
     dropZone.addEventListener('drop', e => {
-    e.preventDefault(); dropZone.classList.remove('drag');
-    const f = e.dataTransfer.files[0];
-    if (f) { document.getElementById('fileInput').files = e.dataTransfer.files; showSelectedName(f.name); }
+        e.preventDefault(); dropZone.classList.remove('drag');
+        const f = e.dataTransfer.files[0];
+        if (f) { document.getElementById('fileInput').files = e.dataTransfer.files; showSelectedName(f.name); }
     });
 
     function handleFileSelect(input) {
@@ -77,10 +125,11 @@
         el.textContent = name; el.style.display = 'block';
     }
 
-    function setFilter(btn) {
-        document.querySelectorAll('.type-pill').forEach(b => b.classList.remove('active'));
+    // Filtro pela sidebar
+    function setSidebarFilter(btn) {
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeFilter = btn.dataset.type;
+        activeFilter = btn.dataset.filter;
         renderGallery();
     }
 
@@ -113,15 +162,24 @@
         div.innerHTML = `
             ${thumb}
             <div class="card-body">
-            <p class="card-name">${item.nome_original}</p>
-            <p class="card-type">${isVideo ? 'vídeo' : 'imagem'}</p>
-            <div class="card-actions">
-                <button class="card-btn" onclick="event.stopPropagation();abrirDestaque(${JSON.stringify(item).replace(/"/g,'&quot;')})">Ver</button>
-                <button class="card-btn del" onclick="event.stopPropagation();deletarArquivo(${item.id})">Excluir</button>
-            </div>
+                <p class="card-name">${escapeHtml(item.nome_original)}</p>
+                <p class="card-type">${isVideo ? 'vídeo' : 'imagem'}</p>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="event.stopPropagation();abrirDestaque(${JSON.stringify(item).replace(/"/g,'&quot;')})">Ver</button>
+                    <button class="card-btn del" onclick="event.stopPropagation();deletarArquivo(${item.id})">Excluir</button>
+                </div>
             </div>`;
         div.addEventListener('click', () => abrirDestaque(item));
         return div;
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
 
     function abrirDestaque(item) {
@@ -129,8 +187,8 @@
         const streamUrl = `${API_URL}/stream/${item.nome_servidor}`;
         const c = document.getElementById('modalConteudo');
         c.innerHTML = item.tipo.includes('video')
-            ? `<video src="${streamUrl}" controls autoplay style="max-width:100%;max-height:340px;border-radius:var(--border-radius-md)"></video>`
-            : `<img src="${streamUrl}" style="max-width:100%;max-height:340px;border-radius:var(--border-radius-md)">`;
+            ? `<video src="${streamUrl}" controls autoplay style="max-width:100%;max-height:340px;border-radius:12px"></video>`
+            : `<img src="${streamUrl}" style="max-width:100%;max-height:340px;border-radius:12px" alt="${item.nome_original}">`;
         document.getElementById('nomeArquivoDestaque').textContent = item.nome_original;
         document.getElementById('modalDestaque').classList.add('open');
     }
@@ -197,10 +255,10 @@
         xhr.onload = () => {
             progressContainer.style.display = 'none'; progressBar.style.width = '0%';
             if (xhr.status === 200) {
-            fileInput.value = '';
-            document.getElementById('selected-name').style.display = 'none';
-            showToast('Upload concluído!', 'success');
-            carregarArquivos();
+                fileInput.value = '';
+                document.getElementById('selected-name').style.display = 'none';
+                showToast('Upload concluído!', 'success');
+                carregarArquivos();
             } else { showToast('Erro no upload.', 'error'); }
         };
         xhr.send(formData);
