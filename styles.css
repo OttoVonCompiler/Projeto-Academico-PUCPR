@@ -159,66 +159,61 @@ body {
     color: var(--color-text-tertiary);
 }
 
-.upload-zone {
-    background-color: var(--color-background-secondary);
-    border: 1.5px dashed var(--color-border-primary);
-    border-radius: var(--border-radius-lg);
-    padding: 28px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.18s, background 0.18s;
-    margin-bottom: 24px;
-}
-
-.upload-zone.drag {
-    border-color: #1967d2;
-    background-color: #f0f7ff;
-}
-
-.upload-zone svg {
-    width: 32px;
-    height: 32px;
+.sidebar-upload {
+    padding: 0 12px 20px;
     margin-bottom: 10px;
-    stroke: #5f6368;
 }
 
-.upload-zone p {
-    font-size: 14px;
-    margin-bottom: 14px;
-}
-
-.upload-zone p span {
-    color: #1967d2;
-    cursor: pointer;
-}
-
-.upload-zone input[type=file] {
-    display: none;
-}
-
-.upload-btn {
-    display: inline-flex;
+.upload-zone.sidebar-style {
+    padding: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 16px;
+    background-color: var(--color-background-info);
+    border: 1.5px dashed transparent; 
+    color: var(--color-text-info);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upload-zone.sidebar-style:hover, 
+.upload-zone.sidebar-style.drag {
+    background-color: #d2e3fc;
+    border-color: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style p {
     font-size: 14px;
     font-weight: 500;
-    padding: 8px 20px;
-    border-radius: 24px;
-    border: none;
-    background-color: #1967d2;
-    color: white;
-    cursor: pointer;
-    transition: opacity 0.15s;
+    margin: 0;
 }
 
-.upload-btn:hover {
-    opacity: 0.85;
+.selected-name-sidebar {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    display: none; 
 }
 
-.upload-btn svg {
-    width: 16px;
-    height: 16px;
-    stroke: white;
+.upload-btn.sidebar-full {
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+    display: none;
 }
 
 .progress-wrap {
@@ -515,4 +510,56 @@ body {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 12px;
     }
+}
+
+/* Ajustes para o Upload na Sidebar */
+.sidebar-upload {
+    padding: 0 12px 20px;
+    margin-bottom: 10px;
+}
+
+.upload-zone.sidebar-style {
+    padding: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 16px;
+    background-color: var(--color-background-info);
+    border: 1px solid transparent;
+    color: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style:hover {
+    background-color: #d2e3fc;
+}
+
+.upload-zone.sidebar-style svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0;
+    stroke: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style p {
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.selected-name-sidebar {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+}
+
+.upload-btn.sidebar-full {
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
 }

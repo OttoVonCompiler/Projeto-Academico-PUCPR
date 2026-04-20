@@ -20,7 +20,7 @@
     </div>
 
     <div class="app-layout">
-        <!-- SIDEBAR (no estilo do Google Fotos) -->
+        <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -28,6 +28,24 @@
                 </svg>
                 <span>Meu cloud</span>
             </div>
+
+            <div class="sidebar-upload">
+                <div class="upload-zone sidebar-style" id="drop-zone" onclick="document.getElementById('fileInput').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <p>Novo arquivo</p>
+                    <input type="file" id="fileInput" onchange="handleFileSelect(this)">
+                </div>
+                <div id="selected-name" class="selected-name-sidebar"></div>
+                <div class="progress-wrap" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <button class="upload-btn sidebar-full" id="btn-upload-exec" style="display:none" onclick="uploadFile()">
+                    Confirmar Envio
+                </button>
+            </div>
+
             <nav class="sidebar-nav">
                 <button class="nav-item active" data-filter="all" onclick="setSidebarFilter(this)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -51,6 +69,7 @@
                     <span>Vídeos</span>
                 </button>
             </nav>
+
             <div class="sidebar-footer">
                 <div class="storage-info">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -69,24 +88,6 @@
                     <h1>Meu cloud pessoal</h1>
                 </div>
                 <span class="topbar-meta" id="file-count">0 arquivos</span>
-            </div>
-
-            <div class="upload-zone" id="drop-zone" onclick="document.getElementById('fileInput').click()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                </svg>
-                <p>Arraste arquivos aqui ou <span>selecione do dispositivo</span></p>
-                <input type="file" id="fileInput" onchange="handleFileSelect(this)">
-                <div id="selected-name" style="font-size:12px;color:#5f6368;margin-bottom:10px;display:none"></div>
-                <button class="upload-btn" onclick="event.stopPropagation();uploadFile()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                    </svg>
-                    Enviar arquivo
-                </button>
-                <div class="progress-wrap" id="progressContainer">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
             </div>
 
             <div id="toast" class="toast"></div>
