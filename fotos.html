@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Cloud Pessoal</title>
+    <style>
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; }
+        h1 { color: #333; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        /* Grid de Midia */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;cursor: pointer; }
+        .card:hover { transform: translateY(-5px); }
+        .card img, .card video { width: 100%; height: 150px; object-fit: cover; background: #000; }
+        .card-info { padding: 10px; font-size: 14px; color: #555; text-align: center; }
+        /* Estilo do Botão de Upload */
+        .upload-section { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 2px dashed #ccc; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☁️ Meu Cloud Pessoal</h1>
+
+        <div class="upload-section">
+            <h3>Fazer Novo Upload</h3>
+            <p>Selecione uma foto ou vídeo para salvar no servidor.</p>
+            
+            <input type="file" id="fileInput" style="margin-bottom: 10px;">
+            <br>
+            <button onclick="uploadFile()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                🚀 Enviar Arquivo
+            </button>
+
+            <div id="progressContainer" style="display:none; width: 100%; background: #eee; border-radius: 10px; margin-top: 20px; height: 15px; overflow: hidden;">
+                <div id="progressBar" style="width: 0%; height: 100%; background: #4CAF50; transition: width 0.2s;"></div>
+            </div>
+        </div>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ccc;">
+
+        <div id="lista" class="grid">
+            </div>
+    </div>
+
+    <div id="modalDestaque" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; justify-content:center; align-items:center; flex-direction:column;">
+        
+        <button onclick="fecharModal()" style="position:absolute; top:20px; right:20px; padding:10px 25px; background:#ff4d4d; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">
+            ✖ FECHAR
+        </button>
+
+        <div id="modalConteudo" style="display:flex; justify-content:center; align-items:center; width:90%; height:80%;">
+            </div>
+
+        <div id="nomeArquivoDestaque" style="color: white; margin-top: 15px; font-size: 18px;"></div>
+    </div>
+
+    <script>
+        const API_URL = "http://100.119.67.120:3001"; // Lembre-se de conferir se o IP/Porta estão corretos
+
+        // 1. Função Principal: Busca os dados do MySQL e preenche a tela
+        async function carregarArquivos() {
+            try {
+                const res = await fetch(`${API_URL}/arquivos`);
+                const data = await res.json();
+                const lista = document.getElementById('lista');
+                
+                lista.innerHTML = ""; // Limpa a galeria
+
+                data.forEach(item => {
+                    // Chamamos a função de renderização para cada item do banco
+                    const cardPronto = renderizarMidia(item);
+                    lista.appendChild(cardPronto);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar arquivos:", error);
+            }
+        }
+
+        // 2. Função de Renderização: Cria o "Card" visual de cada foto/vídeo
+        function renderizarMidia(item) {
+            const div = document.createElement('div');
+            div.className = 'card';
+            
+            // Thumbnail: Se for vídeo, adicionamos #t=0.1 para tentar mostrar o primeiro frame
+            let preview = "";
+            const streamUrl = `${API_URL}/stream/${item.nome_servidor}`;
+
+            if (item.tipo.includes('video')) {
+                preview = `<video src="${streamUrl}#t=0.1" muted></video>`;
+            } else {
+                preview = `<img src="${streamUrl}" alt="${item.nome_original}">`;
+            }
+
+            div.innerHTML = `
+                ${preview}
+                <div class="card-info">
+                    <strong>${item.nome_original}</strong>
+                </div>
+            `;
+
+            // Evento de Clique: Quando clicar no card, abre o modo destaque
+            div.onclick = () => abrirDestaque(item);
+
+            return div;
+        }
+
+        // 3. Função de Destaque: Abre um Modal com o arquivo em tamanho real
+        function abrirDestaque(item) {
+            const modal = document.getElementById('modalDestaque');
+            const conteudo = document.getElementById('modalConteudo');
+            const streamUrl = `${API_URL}/stream/${item.nome_servidor}`;
+
+            conteudo.innerHTML = ""; // Limpa o que tinha antes
+
+            if (item.tipo.includes('video')) {
+                conteudo.innerHTML = `<video src="${streamUrl}" controls autoplay style="max-width:100%; max-height:80vh;"></video>`;
+            } else {
+                conteudo.innerHTML = `<img src="${streamUrl}" style="max-width:100%; max-height:80vh;">`;
+            }
+
+            modal.style.display = "flex"; // Mostra o modal
+        }
+
+        // 4. Função de fechar o Modal
+        function fecharModal() {
+            const modal = document.getElementById('modalDestaque');
+            const conteudo = document.getElementById('modalConteudo');
+            conteudo.innerHTML = ""; // Para o vídeo se estiver tocando
+            modal.style.display = "none";
+        }
+
+        // 5. Função de Upload com Barra de Progresso
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+
+            if (!fileInput.files[0]) {
+                alert("Selecione um arquivo primeiro!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('arquivo', fileInput.files[0]);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `${API_URL}/upload`, true);
+
+            // Exibe a barra de progresso
+            progressContainer.style.display = "block";
+
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percent = (e.loaded / e.total) * 100;
+                    progressBar.style.width = percent + "%";
+                }
+            };
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    alert("Upload concluído com sucesso!");
+                    fileInput.value = ""; // Limpa o campo
+                    progressContainer.style.display = "none";
+                    progressBar.style.width = "0%";
+                    carregarArquivos(); // Atualiza a galeria
+                } else {
+                    alert("Erro no upload!");
+                }
+            };
+
+            xhr.send(formData);
+        }
+
+        // Inicializa a galeria ao abrir o App
+        carregarArquivos();
+    </script>
+</body>
+</html>
