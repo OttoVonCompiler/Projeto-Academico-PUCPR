@@ -2,73 +2,7 @@
 <html>
 <head>
     <title>Meu Cloud Pessoal</title>
-    <style>
-        *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family: 'Segoe UI', sans-serif;background-color:grey;color:black}
-
-        .app{max-width:900px;margin:0 auto;padding:24px 16px}
-
-        .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-        .topbar-title{display:flex;align-items:center;gap:10px}
-        .topbar-title svg{width:22px;height:22px;}
-        .topbar-title h1{font-size:18px;font-weight:500;}
-
-        .upload-zone{background-color: white;border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:28px 24px;text-align:center;cursor:pointer;transition:border-color .18s,background .18s;margin-bottom:24px}
-        .upload-zone.drag{border-color:#378ADD;}
-        .upload-zone svg{width:32px;height:32px;;margin-bottom:10px}
-        .upload-zone p{font-size:13px;;margin-bottom:14px}
-        .upload-zone p span{cursor:pointer}
-        .upload-zone input[type=file]{display:none}
-
-        .upload-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:8px 20px;border-radius:var(--border-radius-md);border:1px solid #378ADD;cursor:pointer;transition:opacity .15s}
-        .upload-btn:hover{opacity:.82}
-        .upload-btn svg{width:14px;height:14px}
-
-        .progress-wrap{margin-top:16px;;border-radius:999px;height:6px;overflow:hidden;display:none}
-        .progress-bar{height:100%;width:0%;background:#378ADD;border-radius:999px;transition:width .2s}
-
-        .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px}
-        .filter-input{flex:1;height:34px;font-size:13px;padding:0 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background-color: white;color:var(--color-text-primary)}
-        .filter-input:focus{outline:none;border-color:#378ADD}
-        .type-pill{font-size:12px;padding:4px 12px;border-radius:999px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:background .15s}
-        .type-pill.active{background:var(--color-background-info);border-color:#85B7EB;color:var(--color-text-info)}
-
-        .section-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
-
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
-
-        .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s}
-        .card:hover{border-color:var(--color-border-secondary);transform:translateY(-2px)}
-        .card-thumb{width:100%;height:120px;object-fit:cover;display:block}
-        .card-thumb-video{width:100%;height:120px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;position:relative}
-        .card-thumb-video svg{width:28px;height:28px;color:var(--color-text-tertiary);position:relative;z-index:1}
-        .card-body{padding:10px 12px 12px}
-        .card-name{font-size:12px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .card-type{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
-        .card-actions{display:flex;gap:6px;margin-top:8px}
-        .card-btn{flex:1;font-size:11px;padding:4px 0;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;cursor:pointer;transition:background .15s}
-        .card-btn:hover{background:var(--color-background-secondary)}
-        .card-btn.del:hover{background:#FCEBEB;border-color:#F09595;color:#A32D2D}
-
-        .empty{text-align:center;padding:48px 24px;color:var(--color-text-tertiary);font-size:13px}
-        .empty svg{width:36px;height:36px;margin-bottom:10px;opacity:.4}
-
-        .modal-wrap{display:none;min-height:480px;background:rgba(0,0,0,.6);border-radius:var(--border-radius-lg);flex-direction:column;align-items:center;justify-content:center;position:relative;padding:32px 24px}
-        .modal-wrap.open{display:flex}
-        .modal-content{max-width:100%;display:flex;align-items:center;justify-content:center}
-        .modal-content img,.modal-content video{max-width:100%;max-height:340px;border-radius:var(--border-radius-md)}
-        .modal-footer{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:14px}
-        .modal-name{font-size:13px;color:rgba(255,255,255,.8)}
-        .modal-btns{display:flex;gap:8px}
-        .modal-btn{font-size:12px;padding:6px 16px;border-radius:var(--border-radius-md);border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);cursor:pointer;transition:background .15s}
-        .modal-btn:hover{background:rgba(255,255,255,.22)}
-        .modal-btn.del{border-color:rgba(240,149,149,.5);color:#F09595}
-        .modal-btn.del:hover{background:rgba(162,45,45,.3)}
-
-        .toast{display:none;position:relative;margin-top:12px;padding:10px 16px;border-radius:var(--border-radius-md);font-size:13px;text-align:center}
-        .toast.success{display:block;background:var(--color-background-success);color:var(--color-text-success);border:0.5px solid var(--color-border-success)}
-        .toast.error{display:block;background:var(--color-background-danger);color:var(--color-text-danger);border:0.5px solid var(--color-border-danger)}
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app">
