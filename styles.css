@@ -1,0 +1,317 @@
+/* ==========================================================================
+   1. VARIÁVEIS E RESET
+   ========================================================================== */
+:root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f8f9fa;
+    --color-background-info: #e8f0fe;
+    --color-text-primary: #202124;
+    --color-text-secondary: #5f6368;
+    --color-text-tertiary: #80868b;
+    --color-text-info: #1967d2;
+    --color-border-primary: #dadce0;
+    --color-border-secondary: #e0e0e0;
+    --color-border-tertiary: #ededed;
+    --color-text-danger: #c5221f;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background-color: #f5f5f5;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   2. LAYOUT E SIDEBAR
+   ========================================================================== */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: var(--color-background-primary);
+}
+
+.sidebar {
+    width: 260px;
+    background-color: var(--color-background-primary);
+    border-right: 1px solid var(--color-border-primary);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 24px 12px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px 24px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.sidebar-header svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* --- SISTEMA DE UPLOAD NA SIDEBAR --- */
+.sidebar-upload {
+    padding: 0 12px 20px;
+}
+
+.upload-zone.sidebar-style {
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 28px; /* Formato de pílula/botão */
+    background-color: var(--color-background-info);
+    border: 1.5px dashed transparent;
+    color: var(--color-text-info);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-zone.sidebar-style:hover, 
+.upload-zone.sidebar-style.drag {
+    background-color: #d2e3fc;
+    border-color: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style p {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.selected-name-sidebar {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    display: none;
+}
+
+.upload-btn.sidebar-full {
+    width: 100%;
+    justify-content: center;
+    background-color: var(--color-text-info);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    gap: 8px;
+}
+
+/* --- NAVEGAÇÃO --- */
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nav-item.active {
+    background-color: var(--color-background-info);
+    color: var(--color-text-info);
+}
+
+/* ==========================================================================
+   3. CONTEÚDO PRINCIPAL E GRID
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    padding: 24px 32px;
+    max-width: calc(100% - 260px);
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.filter-input {
+    width: 100%;
+    max-width: 400px;
+    height: 45px;
+    padding: 0 20px;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 24px;
+    background-color: var(--color-background-secondary);
+    outline: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+.card-thumb, .card-thumb-video {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    background: #f1f3f4;
+}
+
+/* ==========================================================================
+   4. COMPONENTES EXTRA (MODAL, TOAST, PROGRESS)
+   ========================================================================= */
+.progress-wrap {
+    margin: 8px 12px;
+    height: 4px;
+    background: #eee;
+    border-radius: 2px;
+    overflow: hidden;
+    display: none;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--color-text-info);
+    width: 0%;
+    transition: width 0.3s;
+}
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 4px;
+    background: #323232;
+    color: white;
+    z-index: 2000;
+    display: none;
+}
+
+.modal-wrap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-wrap.open {
+    display: flex;
+}
+
+.modal-content {
+    max-width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.modal-name {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.5);
+    padding: 6px 12px;
+    border-radius: 24px;
+}
+
+.modal-btns {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-btn {
+    font-size: 13px;
+    padding: 8px 20px;
+    border-radius: 28px;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-btn:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+.modal-btn.del {
+    background: rgba(197,34,31,0.8);
+}
+
+.modal-btn.del:hover {
+    background: rgba(197,34,31,1);
+}
