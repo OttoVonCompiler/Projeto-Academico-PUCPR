@@ -1,9 +1,6 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+/* ==========================================================================
+   1. VARIÁVEIS E RESET
+   ========================================================================== */
 :root {
     --color-background-primary: #ffffff;
     --color-background-secondary: #f8f9fa;
@@ -15,24 +12,28 @@
     --color-border-primary: #dadce0;
     --color-border-secondary: #e0e0e0;
     --color-border-tertiary: #ededed;
-    --color-border-success: #b9f6ca;
-    --color-background-success: #e9f7ef;
-    --color-text-success: #1e8e3e;
-    --color-border-danger: #f5c6cb;
-    --color-background-danger: #fce8e6;
     --color-text-danger: #c5221f;
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
     --border-radius-lg: 16px;
 }
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
     background-color: #f5f5f5;
     color: var(--color-text-primary);
+    line-height: 1.5;
 }
 
-/* LAYOUT PRINCIPAL - SIDEBAR + MAIN */
+/* ==========================================================================
+   2. LAYOUT E SIDEBAR
+   ========================================================================== */
 .app-layout {
     display: flex;
     min-height: 100vh;
@@ -41,7 +42,6 @@ body {
     background-color: var(--color-background-primary);
 }
 
-/* SIDEBAR ESTILO GOOGLE FOTOS */
 .sidebar {
     width: 260px;
     background-color: var(--color-background-primary);
@@ -52,7 +52,6 @@ body {
     top: 0;
     height: 100vh;
     padding: 24px 12px;
-    transition: all 0.2s;
 }
 
 .sidebar-header {
@@ -62,7 +61,6 @@ body {
     padding: 0 12px 24px;
     font-size: 18px;
     font-weight: 500;
-    color: var(--color-text-primary);
 }
 
 .sidebar-header svg {
@@ -70,6 +68,69 @@ body {
     height: 28px;
 }
 
+/* --- SISTEMA DE UPLOAD NA SIDEBAR --- */
+.sidebar-upload {
+    padding: 0 12px 20px;
+}
+
+.upload-zone.sidebar-style {
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 28px; /* Formato de pílula/botão */
+    background-color: var(--color-background-info);
+    border: 1.5px dashed transparent;
+    color: var(--color-text-info);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-zone.sidebar-style:hover, 
+.upload-zone.sidebar-style.drag {
+    background-color: #d2e3fc;
+    border-color: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-text-info);
+}
+
+.upload-zone.sidebar-style p {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.selected-name-sidebar {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    display: none;
+}
+
+.upload-btn.sidebar-full {
+    width: 100%;
+    justify-content: center;
+    background-color: var(--color-text-info);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    gap: 8px;
+}
+
+/* --- NAVEGAÇÃO --- */
 .sidebar-nav {
     flex: 1;
     display: flex;
@@ -90,18 +151,6 @@ body {
     color: var(--color-text-secondary);
     cursor: pointer;
     transition: background 0.2s;
-    width: 100%;
-    text-align: left;
-}
-
-.nav-item svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 1.5;
-}
-
-.nav-item:hover {
-    background-color: var(--color-background-secondary);
 }
 
 .nav-item.active {
@@ -109,37 +158,13 @@ body {
     color: var(--color-text-info);
 }
 
-.nav-item.active svg {
-    stroke: var(--color-text-info);
-}
-
-.sidebar-footer {
-    padding-top: 24px;
-    border-top: 1px solid var(--color-border-secondary);
-    margin-top: auto;
-}
-
-.storage-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    font-size: 13px;
-    color: var(--color-text-tertiary);
-    border-radius: 28px;
-}
-
-.storage-info svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* MAIN CONTENT */
+/* ==========================================================================
+   3. CONTEÚDO PRINCIPAL E GRID
+   ========================================================================== */
 .main-content {
     flex: 1;
     padding: 24px 32px;
     max-width: calc(100% - 260px);
-    overflow-x: auto;
 }
 
 .topbar {
@@ -149,126 +174,21 @@ body {
     margin-bottom: 28px;
 }
 
-.topbar-title h1 {
-    font-size: 22px;
-    font-weight: 500;
-}
-
-.topbar-meta {
-    font-size: 14px;
-    color: var(--color-text-tertiary);
-}
-
-.sidebar-upload {
-    padding: 0 12px 20px;
-    margin-bottom: 10px;
-}
-
-.upload-zone.sidebar-style {
-    padding: 16px;
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border-radius: 16px;
-    background-color: var(--color-background-info);
-    border: 1.5px dashed transparent; 
-    color: var(--color-text-info);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.upload-zone.sidebar-style:hover, 
-.upload-zone.sidebar-style.drag {
-    background-color: #d2e3fc;
-    border-color: var(--color-text-info);
-}
-
-.upload-zone.sidebar-style svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--color-text-info);
-}
-
-.upload-zone.sidebar-style p {
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0;
-}
-
-.selected-name-sidebar {
-    font-size: 11px;
-    color: var(--color-text-secondary);
-    margin: 5px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 5px;
-    display: none; 
-}
-
-.upload-btn.sidebar-full {
-    width: 100%;
-    justify-content: center;
-    margin-top: 5px;
-    display: none;
-}
-
-.progress-wrap {
-    margin-top: 16px;
-    border-radius: 999px;
-    height: 6px;
-    overflow: hidden;
-    display: none;
-    background-color: #e0e0e0;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #1967d2;
-    border-radius: 999px;
-    transition: width 0.2s;
-}
-
-.toolbar {
-    margin-bottom: 20px;
-}
-
 .filter-input {
     width: 100%;
-    max-width: 360px;
-    height: 40px;
-    font-size: 14px;
-    padding: 0 16px;
+    max-width: 400px;
+    height: 45px;
+    padding: 0 20px;
     border: 1px solid var(--color-border-primary);
-    border-radius: 28px;
-    background-color: white;
-    color: var(--color-text-primary);
+    border-radius: 24px;
+    background-color: var(--color-background-secondary);
     outline: none;
-}
-
-.filter-input:focus {
-    border-color: #1967d2;
-    box-shadow: 0 0 0 2px rgba(25,103,210,0.2);
-}
-
-.section-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-text-tertiary);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    margin-bottom: 40px;
 }
 
 .card {
@@ -276,96 +196,53 @@ body {
     border: 1px solid var(--color-border-tertiary);
     border-radius: var(--border-radius-md);
     overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: all 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
 }
 
-.card-thumb {
+.card-thumb, .card-thumb-video {
     width: 100%;
-    height: 140px;
+    height: 150px;
     object-fit: cover;
-    display: block;
-}
-
-.card-thumb-video {
-    width: 100%;
-    height: 140px;
     background: #f1f3f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.card-thumb-video svg {
-    width: 36px;
-    height: 36px;
-    color: #9aa0a6;
-}
-
-.card-body {
-    padding: 12px;
-}
-
-.card-name {
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
+/* ==========================================================================
+   4. COMPONENTES EXTRA (MODAL, TOAST, PROGRESS)
+   ========================================================================= */
+.progress-wrap {
+    margin: 8px 12px;
+    height: 4px;
+    background: #eee;
+    border-radius: 2px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: none;
 }
 
-.card-type {
-    font-size: 11px;
-    color: var(--color-text-tertiary);
-    margin-top: 2px;
+.progress-bar {
+    height: 100%;
+    background: var(--color-text-info);
+    width: 0%;
+    transition: width 0.3s;
 }
 
-.card-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 4px;
+    background: #323232;
+    color: white;
+    z-index: 2000;
+    display: none;
 }
 
-.card-btn {
-    flex: 1;
-    font-size: 12px;
-    padding: 6px 0;
-    border: 1px solid var(--color-border-secondary);
-    border-radius: 20px;
-    background: transparent;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.card-btn:hover {
-    background: var(--color-background-secondary);
-}
-
-.card-btn.del:hover {
-    background: #fce8e6;
-    border-color: #f5c6cb;
-    color: #c5221f;
-}
-
-.empty {
-    text-align: center;
-    padding: 60px 24px;
-    color: var(--color-text-tertiary);
-}
-
-.empty svg {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 12px;
-    opacity: 0.5;
-}
-
-/* MODAL FIXO */
 .modal-wrap {
     display: none;
     position: fixed;
@@ -437,129 +314,4 @@ body {
 
 .modal-btn.del:hover {
     background: rgba(197,34,31,1);
-}
-
-/* TOAST */
-.toast {
-    display: none;
-    margin-top: 12px;
-    padding: 12px 20px;
-    border-radius: 28px;
-    font-size: 14px;
-    text-align: center;
-    background: #323232;
-    color: white;
-    width: fit-content;
-    max-width: 90%;
-}
-
-.toast.success {
-    display: block;
-    background: #1e8e3e;
-}
-
-.toast.error {
-    display: block;
-    background: #c5221f;
-}
-
-/* sidebar vira barra superior em mobile */
-@media (max-width: 768px) {
-    .app-layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        border-right: none;
-        border-bottom: 1px solid var(--color-border-primary);
-        padding: 12px 16px;
-        flex-direction: row;
-        overflow-x: auto;
-        white-space: nowrap;
-        gap: 8px;
-    }
-
-    .sidebar-header {
-        display: none;
-    }
-
-    .sidebar-nav {
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    .nav-item {
-        width: auto;
-        padding: 8px 16px;
-        border-radius: 32px;
-    }
-
-    .sidebar-footer {
-        display: none;
-    }
-
-    .main-content {
-        max-width: 100%;
-        padding: 20px 16px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 12px;
-    }
-}
-
-/* Ajustes para o Upload na Sidebar */
-.sidebar-upload {
-    padding: 0 12px 20px;
-    margin-bottom: 10px;
-}
-
-.upload-zone.sidebar-style {
-    padding: 16px;
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border-radius: 16px;
-    background-color: var(--color-background-info);
-    border: 1px solid transparent;
-    color: var(--color-text-info);
-}
-
-.upload-zone.sidebar-style:hover {
-    background-color: #d2e3fc;
-}
-
-.upload-zone.sidebar-style svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 0;
-    stroke: var(--color-text-info);
-}
-
-.upload-zone.sidebar-style p {
-    margin-bottom: 0;
-    font-weight: 500;
-}
-
-.selected-name-sidebar {
-    font-size: 11px;
-    color: var(--color-text-secondary);
-    margin: 5px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 5px;
-}
-
-.upload-btn.sidebar-full {
-    width: 100%;
-    justify-content: center;
-    margin-top: 5px;
 }
