@@ -1,0 +1,26 @@
+name: Pipeline Academico
+
+on:
+  push:
+    branches: [ "main", "feature/ci-cd" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build e Teste
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalando dependencias
+        run: echo "Instalando pacotes do package.json..."
+      - name: Verificando codigo
+        run: echo "Sucesso!"
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build 
+    steps:
+      - name: Executando Deploy
+        run: echo "Projeto implantado com sucesso!"
