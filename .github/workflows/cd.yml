@@ -1,10 +1,9 @@
-name: CD - Deploy/Release
+name: CD - Deploy
 
 on:
   workflow_run:
-    workflows: ["CI - Verificação de Código"]
+    workflows: ["CI - Verificação"]
     types: [completed]
-    branches: [main]
 
 jobs:
   deploy:
@@ -12,5 +11,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
-      - name: Simulando Deploy
-        run: echo "O código foi validado. Iniciando empacotamento e distribuição..."
+    - name: Baixando o código
+      uses: actions/checkout@v4
+
+    - name: Simulando Deploy
+      run: |
+        echo "O CI passou com sucesso!"
+        echo "Iniciando a implantação do Projeto Acadêmico..."
+        echo "Status: Concluído."
