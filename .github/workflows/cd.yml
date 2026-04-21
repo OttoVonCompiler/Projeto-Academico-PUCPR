@@ -1,21 +1,12 @@
 name: CD - Deploy
-
-on:
-  workflow_run:
-    workflows: ["CI - Verificação"]
-    types: [completed]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    
-    steps:
-    - name: Baixando o código
-      uses: actions/checkout@v4
-
-    - name: Simulando Deploy
-      run: |
-        echo "O CI passou com sucesso!"
-        echo "Iniciando a implantação do Projeto Acadêmico..."
-        echo "Status: Concluído."
+    on:
+      workflow_run:
+        workflows: ["CI - Verificação"]
+        types: [completed]
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        steps:
+          - run: echo "Iniciando implantação automática..."
+    ```
