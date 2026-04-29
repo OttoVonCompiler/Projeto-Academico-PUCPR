@@ -1,10 +1,8 @@
-name: Pipeline Academico
+name: Pipeline Academico com Alerta
 
 on:
   push:
     branches: [ "main", "feature/ci-cd" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -13,14 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Instalando dependencias
-        run: echo "Instalando pacotes do package.json..."
-      - name: Verificando codigo
-        run: echo "Sucesso!"
+        run: echo "Instalando pacotes..."
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: build 
+    needs: build
     steps:
       - name: Executando Deploy
-        run: echo "Projeto implantado com sucesso!"
+        run: echo "Projeto implantado!"
+
+  # O NOVO PASSO DE ALERTA
+  notificacao:
+    name: Alerta Discord
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always() # Garante que o alerta seja enviado mesmo se algo falhar
+    steps:
+      - name: Enviar Mensagem ao Discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "🚀 **Novo Commit no Projeto Acadêmico!**\nUsuário: ${{ github.actor }}\nStatus: ${{ job.status }}"
