@@ -21,7 +21,6 @@ jobs:
       - name: Executando Deploy
         run: echo "Projeto implantado!"
 
-  # O NOVO PASSO DE ALERTA
   notificacao:
     name: Alerta Discord
     runs-on: ubuntu-latest
