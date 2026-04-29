@@ -30,5 +30,5 @@ jobs:
       - name: Enviar Mensagem ao Discord
         uses: sarisia/actions-status-discord@v1
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DC_NOTI }}
           content: "🚀 **Novo Commit no Projeto Acadêmico!**\nUsuário: ${{ github.actor }}\nStatus: ${{ job.status }}"
