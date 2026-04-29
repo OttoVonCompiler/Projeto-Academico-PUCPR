@@ -2,9 +2,9 @@
   "name": "projeto-academico-pucpr",
   "version": "1.0.0",
   "description": "Repositório dedicado ao uso acadêmico, na PUC-PR, para meu projeto de estudos utilizando uma réplica do google fotos",
-  "main": "index.js",
+  "main": "funcoes.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/OttoVonCompiler/Projeto-Academico-PUCPR/issues"
   },
-  "homepage": "https://github.com/OttoVonCompiler/Projeto-Academico-PUCPR#readme"
+  "homepage": "https://github.com/OttoVonCompiler/Projeto-Academico-PUCPR#readme",
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
 }

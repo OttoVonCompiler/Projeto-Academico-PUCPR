@@ -1,34 +1,37 @@
-name: Pipeline Academico com Alerta
+name: PROJETO PUCPR
 
 on:
   push:
-    branches: [ "main", "feature/ci-cd" ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  build:
-    name: Build e Teste
+  Trabalho-Academico:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Instalando dependencias
-        run: echo "Instalando pacotes..."
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Executando Deploy
-        run: echo "Projeto implantado!"
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-  notificacao:
-    name: Alerta Discord
-    runs-on: ubuntu-latest
-    needs: [build, deploy]
-    if: always() # Garante que o alerta seja enviado mesmo se algo falhar
-    steps:
-      - name: Enviar Mensagem ao Discord
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependências
+        run: npm install
+
+      - name: Executar Testes Unitários
+        run: npm test
+
+      - name: Simular Deploy
+        if: success()
+        run: echo "Deploy realizado com sucesso na branch main!"
+
+      - name: Notificação no Discord
+        if: always()
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DC_NOTI }}
-          content: "🚀 **Novo Commit no Projeto Acadêmico!**\nUsuário: ${{ github.actor }}\nStatus: ${{ job.status }}"
+          content: "📢 **Relatório de Pipeline**\nRepositório: ${{ github.repository }}\nStatus final: ${{ job.status }}\nCommit: ${{ github.event.head_commit.message }}"
